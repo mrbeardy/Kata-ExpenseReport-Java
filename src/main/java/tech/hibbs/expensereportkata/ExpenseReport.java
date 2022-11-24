@@ -13,7 +13,13 @@ class Expense {
 }
 
 public class ExpenseReport {
-    public String printReport(List<Expense> expenses) {
+    private final List<Expense> expenses;
+
+    public ExpenseReport(final List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
+    public String printReport() {
         StringBuilder stringBuilder = new StringBuilder();
         int total = 0;
         int mealExpenses = 0;

@@ -28,9 +28,9 @@ public class ExpenseReportTests {
         lavishDinnerExpense.amount = 8000;
 
         List<Expense> expenses = List.of(carRentalExpense, breakfastExpense, dinnerExpense, lavishDinnerExpense);
-        ExpenseReport expenseReport = new ExpenseReport();
+        ExpenseReport expenseReport = new ExpenseReport(expenses);
 
-        String result = expenseReport.printReport(expenses);
+        String result = expenseReport.printReport();
         System.out.println(result);
 
         assertTrue(result.contains("Expenses " + new Date()));
