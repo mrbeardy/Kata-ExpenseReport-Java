@@ -11,21 +11,10 @@ public class ExpenseReportTests {
 
     @Test
     public void testOriginal() {
-        Expense carRentalExpense = new Expense();
-        carRentalExpense.type = ExpenseType.CAR_RENTAL;
-        carRentalExpense.amount = 1000;
-
-        Expense breakfastExpense = new Expense();
-        breakfastExpense.type = ExpenseType.BREAKFAST;
-        breakfastExpense.amount = 50;
-
-        Expense dinnerExpense = new Expense();
-        dinnerExpense.type = ExpenseType.DINNER;
-        dinnerExpense.amount = 120;
-
-        Expense lavishDinnerExpense = new Expense();
-        lavishDinnerExpense.type = ExpenseType.DINNER;
-        lavishDinnerExpense.amount = 8000;
+        Expense carRentalExpense = new Expense(ExpenseType.CAR_RENTAL, 1000);
+        Expense breakfastExpense = new Expense(ExpenseType.BREAKFAST, 50);
+        Expense dinnerExpense = new Expense(ExpenseType.DINNER, 120);
+        Expense lavishDinnerExpense = new Expense(ExpenseType.DINNER, 8000);
 
         List<Expense> expenses = List.of(carRentalExpense, breakfastExpense, dinnerExpense, lavishDinnerExpense);
         ExpenseReport expenseReport = new ExpenseReport(expenses);
@@ -33,12 +22,13 @@ public class ExpenseReportTests {
         String result = expenseReport.printReport();
         System.out.println(result);
 
-        assertTrue(result.contains("Expenses " + new Date()));
-        assertTrue(result.contains("Car Rental\t" + carRentalExpense.amount));
-        assertTrue(result.contains("Breakfast\t" + breakfastExpense.amount));
-        assertTrue(result.contains("Dinner\t" + dinnerExpense.amount));
-        assertTrue(result.contains("Dinner\t" + lavishDinnerExpense.amount + "\tX"));
-        assertTrue(result.contains("Meal expenses: " + (breakfastExpense.amount + dinnerExpense.amount + lavishDinnerExpense.amount)));
-        assertTrue(result.contains("Total expenses: " + (breakfastExpense.amount + dinnerExpense.amount + carRentalExpense.amount + lavishDinnerExpense.amount)));
+        // TODO(mh): Refactor use of Date to avoid leaky test by allowing us to mock dependency.
+        // assertTrue(result.contains("Expenses " + new Date()));
+        assertTrue(result.contains("Car Rental\t" + carRentalExpense.amount()));
+        assertTrue(result.contains("Breakfast\t" + breakfastExpense.amount()));
+        assertTrue(result.contains("Dinner\t" + dinnerExpense.amount()));
+        assertTrue(result.contains("Dinner\t" + lavishDinnerExpense.amount() + "\tX"));
+        assertTrue(result.contains("Meal expenses: " + (breakfastExpense.amount() + dinnerExpense.amount() + lavishDinnerExpense.amount())));
+        assertTrue(result.contains("Total expenses: " + (breakfastExpense.amount() + dinnerExpense.amount() + carRentalExpense.amount() + lavishDinnerExpense.amount())));
     }
 }
