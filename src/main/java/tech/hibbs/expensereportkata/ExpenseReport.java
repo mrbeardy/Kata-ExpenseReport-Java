@@ -13,11 +13,12 @@ class Expense {
 }
 
 public class ExpenseReport {
-    public void printReport(List<Expense> expenses) {
+    public String printReport(List<Expense> expenses) {
+        StringBuilder stringBuilder = new StringBuilder();
         int total = 0;
         int mealExpenses = 0;
 
-        System.out.println("Expenses " + new Date());
+        stringBuilder.append("Expenses " + new Date() + "\n");
 
         for (Expense expense : expenses) {
             if (expense.type == ExpenseType.DINNER || expense.type == ExpenseType.BREAKFAST) {
@@ -39,12 +40,14 @@ public class ExpenseReport {
 
             String mealOverExpensesMarker = expense.type == ExpenseType.DINNER && expense.amount > 5000 || expense.type == ExpenseType.BREAKFAST && expense.amount > 1000 ? "X" : " ";
 
-            System.out.println(expenseName + "\t" + expense.amount + "\t" + mealOverExpensesMarker);
+            stringBuilder.append(expenseName + "\t" + expense.amount + "\t" + mealOverExpensesMarker + "\n");
 
             total += expense.amount;
         }
 
-        System.out.println("Meal expenses: " + mealExpenses);
-        System.out.println("Total expenses: " + total);
+        stringBuilder.append("Meal expenses: " + mealExpenses + "\n");
+        stringBuilder.append("Total expenses: " + total + "\n");
+
+        return stringBuilder.toString();
     }
 }
