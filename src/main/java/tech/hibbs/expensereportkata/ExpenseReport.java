@@ -4,42 +4,48 @@ import java.util.Date;
 import java.util.List;
 
 // TODO:
-//  - Remove hard-coded list for meal-types in Expense record
-//  - Remove hard-coded list for over-expenses in Expense record
+//  - Pass in Date object
 
 enum ExpenseType {
-    DINNER, BREAKFAST, CAR_RENTAL
+    DINNER("Dinner", 5000, true),
+    BREAKFAST("Breakfast", 1000, true),
+    CAR_RENTAL("Car Rental", 0, false),
+
+    ;
+
+    final String name;
+    final int limit;
+    final boolean isMealType;
+
+    ExpenseType(String name, int limit, boolean isMealType) {
+        this.name = name;
+        this.limit = limit;
+        this.isMealType = isMealType;
+    }
 }
 
 record Expense(String name, ExpenseType type, int amount) {
-    public final static int BREAKFAST_OVER_EXPENSES_AMOUNT = 1000;
-    public final static int DINNER_OVER_EXPENSES_AMOUNT = 5000;
-
-    public boolean isMealExpense() {
-        return type == ExpenseType.BREAKFAST || type == ExpenseType.DINNER;
+    public boolean isMealType() {
+        return type.isMealType;
     }
 
-    private boolean exceedsOverExpensesAmount() {
-        int overExpensesAmount = getOverExpensesAmount();
-
-        return overExpensesAmount > 0 && amount > overExpensesAmount;
+    private int getLimit() {
+        return type.limit;
     }
 
-    private int getOverExpensesAmount() {
-        return switch(type) {
-            case BREAKFAST -> BREAKFAST_OVER_EXPENSES_AMOUNT;
-            case DINNER -> DINNER_OVER_EXPENSES_AMOUNT;
-            default -> 0;
-        };
+    private boolean exceedsLimit() {
+        int limit = getLimit();
+
+        return limit > 0 && amount > limit;
     }
 
-    private String getOverExpensesMarker() {
-        return exceedsOverExpensesAmount() ? "X" : "";
+    private String getLimitMarker() {
+        return exceedsLimit() ? "X" : "";
     }
 
     @Override
     public String toString() {
-        return name() + "\t" + amount() + "\t" + getOverExpensesMarker();
+        return name() + "\t" + amount() + "\t" + getLimitMarker();
     }
 }
 
@@ -58,11 +64,11 @@ public class ExpenseReport {
         stringBuilder.append("Expenses " + new Date() + "\n");
 
         for (Expense expense : expenses) {
-            if (expense.isMealExpense()) {
+            if (expense.isMealType()) {
                 mealExpenses += expense.amount();
             }
 
-            stringBuilder.append(expense.toString() + "\n");
+            stringBuilder.append(expense + "\n");
 
             total += expense.amount();
         }
