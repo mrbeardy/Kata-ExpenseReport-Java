@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 // TODO:
-//  - Remove hard-coded expenses-marker values
 //  - Remove hard-coded meal-types in expense report
 
 enum ExpenseType {
@@ -12,6 +11,9 @@ enum ExpenseType {
 }
 
 record Expense(String name, ExpenseType type, int amount) {
+    public final static int BREAKFAST_OVER_EXPENSES_AMOUNT = 1000;
+    public final static int DINNER_OVER_EXPENSES_AMOUNT = 5000;
+
     @Override
     public String toString() {
         return name() + "\t" + amount();
@@ -37,7 +39,11 @@ public class ExpenseReport {
                 mealExpenses += expense.amount();
             }
 
-            String mealOverExpensesMarker = expense.type() == ExpenseType.DINNER && expense.amount() > 5000 || expense.type() == ExpenseType.BREAKFAST && expense.amount() > 1000 ? "X" : " ";
+            boolean mealOverExpenses = 
+                expense.type() == ExpenseType.DINNER && expense.amount() > Expense.DINNER_OVER_EXPENSES_AMOUNT || 
+                expense.type() == ExpenseType.BREAKFAST && expense.amount() > Expense.BREAKFAST_OVER_EXPENSES_AMOUNT;
+
+            String mealOverExpensesMarker = mealOverExpenses ? "X" : " ";
 
             stringBuilder.append(expense.toString() + "\t" + mealOverExpensesMarker + "\n");
 
