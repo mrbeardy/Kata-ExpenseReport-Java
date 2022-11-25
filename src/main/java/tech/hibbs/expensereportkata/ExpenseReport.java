@@ -14,13 +14,13 @@ record Expense(String name, ExpenseType type, int amount) {
     public final static int BREAKFAST_OVER_EXPENSES_AMOUNT = 1000;
     public final static int DINNER_OVER_EXPENSES_AMOUNT = 5000;
 
-    public boolean exceedsOverExpensesAmount() {
+    private boolean exceedsOverExpensesAmount() {
         int overExpensesAmount = getOverExpensesAmount();
 
         return overExpensesAmount > 0 && amount > overExpensesAmount;
     }
 
-    public int getOverExpensesAmount() {
+    private int getOverExpensesAmount() {
         return switch(type) {
             case BREAKFAST -> BREAKFAST_OVER_EXPENSES_AMOUNT;
             case DINNER -> DINNER_OVER_EXPENSES_AMOUNT;
@@ -28,9 +28,13 @@ record Expense(String name, ExpenseType type, int amount) {
         };
     }
 
+    private String getOverExpensesMarker() {
+        return exceedsOverExpensesAmount() ? "X" : "";
+    }
+
     @Override
     public String toString() {
-        return name() + "\t" + amount();
+        return name() + "\t" + amount() + "\t" + getOverExpensesMarker();
     }
 }
 
@@ -53,11 +57,7 @@ public class ExpenseReport {
                 mealExpenses += expense.amount();
             }
 
-            boolean expenseOverExpenses = expense.exceedsOverExpensesAmount();
-
-            String expenseOverExpensesMarker = expenseOverExpenses ? "X" : " ";
-
-            stringBuilder.append(expense.toString() + "\t" + expenseOverExpensesMarker + "\n");
+            stringBuilder.append(expense.toString() + "\n");
 
             total += expense.amount();
         }

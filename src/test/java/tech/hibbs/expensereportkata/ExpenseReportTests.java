@@ -24,10 +24,10 @@ public class ExpenseReportTests {
 
         // TODO(mh): Refactor use of Date to avoid leaky test by allowing us to mock dependency.
         // assertTrue(result.contains("Expenses " + new Date()));
-        assertTrue(result.contains("Car Rental\t" + carRentalExpense.amount()));
-        assertTrue(result.contains("Breakfast\t" + breakfastExpense.amount()));
-        assertTrue(result.contains("Dinner\t" + dinnerExpense.amount()));
-        assertTrue(result.contains("Fancy Dinner\t" + lavishDinnerExpense.amount() + "\tX"));
+        assertTrue(result.contains("Car Rental\t" + carRentalExpense.amount() + "\t\n"));
+        assertTrue(result.contains("Breakfast\t" + breakfastExpense.amount() + "\t\n"));
+        assertTrue(result.contains("Dinner\t" + dinnerExpense.amount() + "\t\n"));
+        assertTrue(result.contains("Fancy Dinner\t" + lavishDinnerExpense.amount() + "\tX\n"));
         assertTrue(result.contains("Meal expenses: " + (breakfastExpense.amount() + dinnerExpense.amount() + lavishDinnerExpense.amount())));
         assertTrue(result.contains("Total expenses: " + (breakfastExpense.amount() + dinnerExpense.amount() + carRentalExpense.amount() + lavishDinnerExpense.amount())));
     }
