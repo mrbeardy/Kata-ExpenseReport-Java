@@ -14,6 +14,14 @@ record Expense(String name, ExpenseType type, int amount) {
     public final static int BREAKFAST_OVER_EXPENSES_AMOUNT = 1000;
     public final static int DINNER_OVER_EXPENSES_AMOUNT = 5000;
 
+    public int getOverExpensesAmount() {
+        return switch(type) {
+            case BREAKFAST -> BREAKFAST_OVER_EXPENSES_AMOUNT;
+            case DINNER -> DINNER_OVER_EXPENSES_AMOUNT;
+            default -> 0;
+        };
+    }
+
     @Override
     public String toString() {
         return name() + "\t" + amount();
@@ -40,8 +48,8 @@ public class ExpenseReport {
             }
 
             boolean mealOverExpenses = 
-                expense.type() == ExpenseType.DINNER && expense.amount() > Expense.DINNER_OVER_EXPENSES_AMOUNT || 
-                expense.type() == ExpenseType.BREAKFAST && expense.amount() > Expense.BREAKFAST_OVER_EXPENSES_AMOUNT;
+                expense.type() == ExpenseType.DINNER && expense.amount() > expense.getOverExpensesAmount() ||
+                expense.type() == ExpenseType.BREAKFAST && expense.amount() > expense.getOverExpensesAmount();
 
             String mealOverExpensesMarker = mealOverExpenses ? "X" : " ";
 
