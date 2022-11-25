@@ -4,7 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 // TODO:
-//  - Remove hard-coded meal-types in expense report
+//  - Remove hard-coded list for meal-types in Expense record
+//  - Remove hard-coded list for over-expenses in Expense record
 
 enum ExpenseType {
     DINNER, BREAKFAST, CAR_RENTAL
@@ -13,6 +14,10 @@ enum ExpenseType {
 record Expense(String name, ExpenseType type, int amount) {
     public final static int BREAKFAST_OVER_EXPENSES_AMOUNT = 1000;
     public final static int DINNER_OVER_EXPENSES_AMOUNT = 5000;
+
+    public boolean isMealExpense() {
+        return type == ExpenseType.BREAKFAST || type == ExpenseType.DINNER;
+    }
 
     private boolean exceedsOverExpensesAmount() {
         int overExpensesAmount = getOverExpensesAmount();
@@ -53,7 +58,7 @@ public class ExpenseReport {
         stringBuilder.append("Expenses " + new Date() + "\n");
 
         for (Expense expense : expenses) {
-            if (expense.type() == ExpenseType.DINNER || expense.type() == ExpenseType.BREAKFAST) {
+            if (expense.isMealExpense()) {
                 mealExpenses += expense.amount();
             }
 
