@@ -11,10 +11,10 @@ public class ExpenseReportTests {
 
     @Test
     public void testOriginal() {
-        Expense carRentalExpense = new Expense(ExpenseType.CAR_RENTAL, 1000);
-        Expense breakfastExpense = new Expense(ExpenseType.BREAKFAST, 50);
-        Expense dinnerExpense = new Expense(ExpenseType.DINNER, 120);
-        Expense lavishDinnerExpense = new Expense(ExpenseType.DINNER, 8000);
+        Expense carRentalExpense = new Expense("Car Rental", ExpenseType.CAR_RENTAL, 1000);
+        Expense breakfastExpense = new Expense("Breakfast", ExpenseType.BREAKFAST, 50);
+        Expense dinnerExpense = new Expense("Dinner", ExpenseType.DINNER, 120);
+        Expense lavishDinnerExpense = new Expense("Fancy Dinner", ExpenseType.DINNER, 8000);
 
         List<Expense> expenses = List.of(carRentalExpense, breakfastExpense, dinnerExpense, lavishDinnerExpense);
         ExpenseReport expenseReport = new ExpenseReport(expenses);
@@ -27,7 +27,7 @@ public class ExpenseReportTests {
         assertTrue(result.contains("Car Rental\t" + carRentalExpense.amount()));
         assertTrue(result.contains("Breakfast\t" + breakfastExpense.amount()));
         assertTrue(result.contains("Dinner\t" + dinnerExpense.amount()));
-        assertTrue(result.contains("Dinner\t" + lavishDinnerExpense.amount() + "\tX"));
+        assertTrue(result.contains("Fancy Dinner\t" + lavishDinnerExpense.amount() + "\tX"));
         assertTrue(result.contains("Meal expenses: " + (breakfastExpense.amount() + dinnerExpense.amount() + lavishDinnerExpense.amount())));
         assertTrue(result.contains("Total expenses: " + (breakfastExpense.amount() + dinnerExpense.amount() + carRentalExpense.amount() + lavishDinnerExpense.amount())));
     }
